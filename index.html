@@ -1,47 +1,22 @@
 <!DOCTYPE html>
 <!-- Coding By Ali Aslan -->
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">  
-    <title>Text To Speech with Different Accents in JavaScript</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"> -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>Text To Speech (Accents)</header>
-      <form action="#">
-        <div class="row">
-          <label>Enter Text</label>
-          <textarea></textarea>
-        </div>
-        <div class="row">
-          <label>Select Voice Accent</label>
-          <div class="outer">
-            <select></select>
-          </div>
-        </div>
-        <button id="speechButton">Convert To Speech &nbsp;<i class="fa-solid fa-headphones"></i></box-icon></button>
-      </form>
-      <div class="footer">
-        <a class="footer-text" target="_blank" href="https://myskypower.net">By My Sky Power</a>
-      </div>
-    </div>
 
+<head>
+  <meta charset="utf-8">
+  <title>Chinese text to speech</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
-      <!-- Modal content -->
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <p id="modalText"></p>
-    </div></div>
+<body>
+  <label>Enter Chinese Text to convert to speech</label>
+  <textarea></textarea>
+  <label>Select Voice</label>
+  <select></select>
+  <button id="speechButton">Convert To Speech &nbsp;<i class="fa-solid fa-headphones"></i></box-icon></button>
+  <script src="script.js"></script>
+</body>
 
-
-
-    <script src="script.js"></script>
-
-  </body>
 </html>

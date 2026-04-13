@@ -2,12 +2,6 @@ const textarea = document.querySelector("textarea"),
     voiceList = document.querySelector("select"),
     speechBtn = document.querySelector("#speechButton");
 textarea.value = "你好";
-downloadBtn = document.querySelector("#DownloadButton");
-modalContent = document.querySelector(".modal-content");
-modalText = document.querySelector("#modalText");
-var modal = document.getElementById("myModal");
-var span = document.getElementsByClassName("close")[0];
-
 let synth = speechSynthesis,
     isSpeaking = true;
 
@@ -44,7 +38,7 @@ function textToSpeech(text) {
     utterance.lang = "zh-CN"; // Explicitly force Chinese (zh-CN)
     let selectedVoiceName = voiceList.value;
     let fallbackVoice = null;
-    
+
     for (let voice of synth.getVoices()) {
         if (voice.name === selectedVoiceName) {
             utterance.voice = voice;
@@ -53,59 +47,40 @@ function textToSpeech(text) {
             fallbackVoice = voice;
         }
     }
-    
+
     // If selected voice fails or is empty, use the first available Chinese voice
     if (!utterance.voice && fallbackVoice) {
         utterance.voice = fallbackVoice;
     }
-    
+
     synth.speak(utterance);
 }
 
 speechBtn.addEventListener("click", e => {
     e.preventDefault();
-    if (textarea.value !== "") {
-        if (!synth.speaking) {
-            textToSpeech(textarea.value);
-        }
-        if (textarea.value.length > 5) {
-            setInterval(() => {
-                if (!synth.speaking && !isSpeaking) {
-                    isSpeaking = true;
-                    speechBtn.innerHTML = `Convert To Speech &nbsp;<i class="fa-solid fa-headphones"></i></box-icon>`;
-                } else {
-                }
-            }, 500);
-            if (isSpeaking) {
-                synth.resume();
-                isSpeaking = false;
-                speechBtn.innerHTML = `Pause Speech &nbsp;<i class="fa-solid fa-pause"></i></box-icon>`;
-            } else {
-                synth.pause();
+    if (!synth.speaking) {
+        textToSpeech(textarea.value);
+    }
+    if (textarea.value.length > 5) {
+        setInterval(() => {
+            if (!synth.speaking && !isSpeaking) {
                 isSpeaking = true;
-                // speechBtn.innerText = "Resume Speech";
-                speechBtn.innerHTML = `Resume Speech &nbsp;<i class="fa-solid fa-play"></i></box-icon>`;
-
+                speechBtn.innerHTML = `Convert To Speech &nbsp;<i class="fa-solid fa-headphones"></i></box-icon>`;
+            } else {
             }
+        }, 500);
+        if (isSpeaking) {
+            synth.resume();
+            isSpeaking = false;
+            speechBtn.innerHTML = `Pause Speech &nbsp;<i class="fa-solid fa-pause"></i></box-icon>`;
         } else {
-            speechBtn.innerHTML = `Convert To Speech &nbsp;<i class="fa-solid fa-headphones"></i></box-icon>`;
+            synth.pause();
+            isSpeaking = true;
+            // speechBtn.innerText = "Resume Speech";
+            speechBtn.innerHTML = `Resume Speech &nbsp;<i class="fa-solid fa-play"></i></box-icon>`;
+
         }
     } else {
-        modal.style.display = "block";
-        modalText.innerHTML = `Please Enter a Text`;
+        speechBtn.innerHTML = `Convert To Speech &nbsp;<i class="fa-solid fa-headphones"></i></box-icon>`;
     }
 });
-
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function () {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
