@@ -17,11 +17,15 @@ function voices() {
     let availableVoices = synth.getVoices();
     if (availableVoices.length === 0) return;
     voiceList.innerHTML = "";
+    let firstZhVoice = true;
     for (let voice of availableVoices) {
         if (voice.lang.toLowerCase().includes("zh")) {
-            let selected = voice.lang.includes("CN") ? "selected" : "";
+            let isCn = voice.lang.includes("CN");
+            let selected = (firstZhVoice || isCn) ? "selected" : "";
+            if (isCn) firstZhVoice = false; // prioritize CN if found
             let option = `<option value="${voice.name}" ${selected}>${voice.name} (${voice.lang})</option>`;
             voiceList.insertAdjacentHTML("beforeend", option);
+            if (firstZhVoice) firstZhVoice = false;
         }
     }
 }
@@ -37,11 +41,24 @@ setTimeout(voices, 1000);
 
 function textToSpeech(text) {
     let utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "zh-CN"; // Explicitly force Chinese (zh-CN)
+    let selectedVoiceName = voiceList.value;
+    let fallbackVoice = null;
+    
     for (let voice of synth.getVoices()) {
-        if (voice.name === voiceList.value) {
+        if (voice.name === selectedVoiceName) {
             utterance.voice = voice;
         }
+        if (!fallbackVoice && voice.lang.toLowerCase().includes("zh")) {
+            fallbackVoice = voice;
+        }
     }
+    
+    // If selected voice fails or is empty, use the first available Chinese voice
+    if (!utterance.voice && fallbackVoice) {
+        utterance.voice = fallbackVoice;
+    }
+    
     synth.speak(utterance);
 }
 
