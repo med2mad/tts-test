@@ -13,16 +13,24 @@ let synth = speechSynthesis,
 voices();
 
 function voices() {
-    alert(synth.getVoices().length);
-    for (let voice of synth.getVoices()) {
+    let availableVoices = synth.getVoices();
+    if (availableVoices.length === 0) return;
+    voiceList.innerHTML = "";
+    for (let voice of availableVoices) {
         let selected = voice.name === "Google US English" ? "selected" : "";
         let option = `<option value="${voice.name}" ${selected}>${voice.name} (${voice.lang})</option>`;
         voiceList.insertAdjacentHTML("beforeend", option);
-        alert(voice.name);
     }
 }
 
-synth.addEventListener("voiceschanged", voices);
+if (synth.onvoiceschanged !== undefined) {
+    synth.onvoiceschanged = voices;
+}
+
+// Fallback for some mobile browsers
+setTimeout(voices, 100);
+setTimeout(voices, 500);
+setTimeout(voices, 1000);
 
 function textToSpeech(text) {
     let utterance = new SpeechSynthesisUtterance(text);
