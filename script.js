@@ -1,6 +1,7 @@
 const textarea = document.querySelector("textarea"),
     voiceList = document.querySelector("select"),
     speechBtn = document.querySelector("#speechButton");
+textarea.value = "你好";
 downloadBtn = document.querySelector("#DownloadButton");
 modalContent = document.querySelector(".modal-content");
 modalText = document.querySelector("#modalText");
@@ -17,9 +18,11 @@ function voices() {
     if (availableVoices.length === 0) return;
     voiceList.innerHTML = "";
     for (let voice of availableVoices) {
-        let selected = voice.name === "Google US English" ? "selected" : "";
-        let option = `<option value="${voice.name}" ${selected}>${voice.name} (${voice.lang})</option>`;
-        voiceList.insertAdjacentHTML("beforeend", option);
+        if (voice.lang.toLowerCase().includes("zh")) {
+            let selected = voice.lang.includes("CN") ? "selected" : "";
+            let option = `<option value="${voice.name}" ${selected}>${voice.name} (${voice.lang})</option>`;
+            voiceList.insertAdjacentHTML("beforeend", option);
+        }
     }
 }
 
